@@ -80,8 +80,8 @@ function update(totalTime, deltaTime) {
   graphics.clear();
 
   // Player draw and update
-  const playerForwardX = -Math.sin(player.bodyRot);
-  const playerForwardY = Math.cos(player.bodyRot);
+  const playerForwardX = -Math.sin(player.baseRot);
+  const playerForwardY = Math.cos(player.baseRot);
 
   if (player.gasLevel > 0) {
     // this calculates player forward direction and adds it to position
@@ -146,7 +146,6 @@ const gameManager = {
         player.cannonRot = vals[1] / 360 * Math.PI * 2;
         player.gasLevel = vals[2] / 100 * 3;
         player.isFiring = (vals[3] == 1);
-        console.log(player.isFiring);
       },
       error: console.log,
       complete: console.log,
