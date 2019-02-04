@@ -12,7 +12,14 @@ const input$ = xs.create(serial).map(d => d.toString());
 let graphics;
 const bullets = [];
 let fireTimer = 0;
-const FIRE_TIME_MAX = 200; 
+const FIRE_TIME_MAX = 200;
+
+const collisionZones = [
+  { x: 50, y: 50, r: 30 },
+  { x: 400, y: 500, r: 40 },
+  { x: 650, y: 230, r: 40 },
+  { x: 270, y: 420, r: 40 }
+]
 
 // Simple bullet class for demo
 class Bullet {
@@ -75,6 +82,13 @@ function create () {
   });
 }
 
+function renderCollisionZone(x, y, r) {
+  graphics.save();
+  graphics.translate(x, y);
+  graphics.strokeCircle(0, 0, r);
+  graphics.restore();
+}
+
 function update(totalTime, deltaTime) {
   // Always clear at the top of update
   graphics.clear();
@@ -104,12 +118,23 @@ function update(totalTime, deltaTime) {
   graphics.fillRectShape(player.cannon);
   graphics.restore();
 
+  let collideVal = 0;
+  // Do collision zone stuff
+  collisionZones.forEach(cz => {
+    renderCollisionZone(cz.x, cz.y, cz.r);
+
+    const distSq = (player.x - cz.x) * (player.x - cz.x) + (player.y - cz.y) * (player.y - cz.y)
+    if (distSq < (cz.r * cz.r) + 400) collideVal = 1;
+  });
+
   // Bullet Draw and Update
   // Spawn bullets
+  let fireVal = 0;
   if (player.isFiring) {
     fireTimer += deltaTime;
     if (fireTimer >= FIRE_TIME_MAX) {
       fireTimer = 0;
+      fireVal = 1; // used for feedback
       const cannonForwardX = -Math.sin(player.cannonRot);
       const cannonForwardY = Math.cos(player.cannonRot);
       bullets.push(new Bullet(player.x, player.y, cannonForwardX, cannonForwardY))
@@ -120,6 +145,9 @@ function update(totalTime, deltaTime) {
   // Remove one dead bullet per frame
   const removeBullet = bullets.find(b => b.isDead);
   if (removeBullet) bullets.splice(removeBullet, 1);
+
+  if (serial.port) serial.port.write(`${fireVal}:${Math.round(player.gasLevel/100)}:${collideVal}-`);
+  console.log(`${fireVal}:${Math.round(player.gasLevel/100)}:${collideVal}-`);
 }
 
 const config = {

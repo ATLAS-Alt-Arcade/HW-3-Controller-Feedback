@@ -6,17 +6,18 @@ String message = "";
 void loop() {
   // Only run this if whe have a message
   if (Serial.available() > 0) {
-    // Get message from
+    // Get message from computer
     message = Serial.readStringUntil('-');
-    // This is where you should parse and do something with the message
-    Serial.print("READ ITEM: ");
-    Serial.println(message);
+
+    // Get cannon feedback info
+    if (message.substring(0, 1).toInt() == 1) {
+      // Execute Cannon Feedback
+    }
 
     // Clear the buffer so we are up to date with messages
     Serial.flush();
   }
 
-  // Demo of commands
-  Serial.println("90:90:20:0-");
-  delay(1000);
+  // Always delay a little
+  delay(10);
 }
