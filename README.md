@@ -1,4 +1,4 @@
-# HW-2-Create-Analog-Controller
+# HW-3-Controller Feedback
 
 ### Getting Started
 - Make sure [Node.js](https://nodejs.org/en/) is installed
@@ -10,10 +10,26 @@
 - At the top level of the project folder in your terminal run the command `npm start`
 - To open a debug window, select the toggle developer tools option on the window bar under view.
 
-## Assignment: Make a Controller Using Analog Inputs
-Using any analog inputs and the analog read function in Arduino, make a controller that is able to execute all of the game actions: Rotate Cannon, Steer Body, Accelerate, and Fire. Upload your Arduino code and a short video of your controller in action to canvas when complete. Video's should clearly display each input and it's connection to in game actions.
+## Assignment: Add Feedback To Your Controller
+Using the controller from HW 2, add feedback connected to the game. Make a controller that somehow provides feedback for the following game properties Cannon Fired, Movement, and Collisions. Upload your Arduino code and a short video of your controller in action to canvas when complete. Video's should clearly display each feedback element.
 
-## Serial API
+### Useful Links
+- [Serial API details](https://www.arduino.cc/reference/en/language/functions/communication/serial/)
+- [Arduino String API](https://www.arduino.cc/reference/en/language/variables/data-types/stringobject/)
+
+# Serial API
+
+## Feedback Packet
+
+### Packet Shape
+`cannon:movement:isColliding-`
+
+### Packet Properties
+- cannon: either 0 or 1, tells if cannon has just been fired
+- movement: from 0 - 9, tells current velocity of player
+- isColliding: ether 0 or 1, tells if player is colliding with something
+
+## Input Packet
 
 ### Packet Shape
 `bodyRot:cannonRot:speed:isFiring-`
