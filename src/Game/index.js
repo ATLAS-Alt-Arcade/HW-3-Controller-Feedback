@@ -146,8 +146,10 @@ function update(totalTime, deltaTime) {
   const removeBullet = bullets.find(b => b.isDead);
   if (removeBullet) bullets.splice(removeBullet, 1);
 
+  console.log(serial.port);
+  
   if (serial.port) serial.port.write(`${fireVal}:${Math.round(player.gasLevel/100)}:${collideVal}-`);
-  console.log(`${fireVal}:${Math.round(player.gasLevel/100)}:${collideVal}-`);
+  // console.log(`${fireVal}:${Math.round(player.gasLevel/100)}:${collideVal}-`);
 }
 
 const config = {
